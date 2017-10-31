@@ -1,0 +1,31 @@
+{
+	"name": "radio4000-sdk",
+	"version": "0.0.0",
+	"scripts": {
+		"test": "NODE_ENV=production ava",
+		"format": "prettier --write '*.js'"
+	},
+	"dependencies": {
+		"isomorphic-fetch": "^2.2.1",
+		"unfetch": "^3.0.0"
+	},
+	"devDependencies": {
+		"ava": "^0.23.0",
+		"babel-preset-env": "^1.6.1"
+	},
+	"ava": {
+		"require": [
+			"babel-register"
+		]
+	},
+	"babel": {
+		"presets": [
+			"env"
+		]
+	},
+	"prettier": {
+		"useTabs": true,
+		"singleQuote": true,
+		"semi": false
+	}
+}
