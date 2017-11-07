@@ -1,12 +1,13 @@
 # Radio4000 JavaScript SDK
 
-> Helpers to fetch data via REST API from the Radio4000 Firebase database 
+> Helpers to fetch data via REST API from the Radio4000 Firebase database
 
-This package takes care of a few annoyances with Firebase: not having an `id` inside each object, "lists" being returned as an object instead an array. 
+This package takes care of a few annoyances with Firebase: not having an `id` inside each object, "lists" being returned as an object instead an array.
 
 Here are the methods you can use. All return a promise.
 
 ```js
+findChannels(amount) // amount is optional
 findChannel(id)
 findChannelBySlug(channelSlug)
 findChannelImage(channelObject)

@@ -16,6 +16,12 @@ export const toObject = (obj, id) => Object.assign(obj, { id })
 export const toArray = data =>
 	Object.keys(data).map(id => toObject(data[id], id))
 
+export function findChannels(max) {
+	let url = `${host}/channels.json`
+	if (max) url = url + `?orderBy="created"&limitToFirst=${max}`
+	return fetchAndParse(url).then(toArray)
+}
+
 export function findChannel(id) {
 	const url = `${host}/channels/${id}.json`
 	return fetchAndParse(url).then(obj => toObject(obj, id))
@@ -63,10 +69,3 @@ export function findTracksByChannel(id) {
 		})
 }
 
-export default {
-	findChannel,
-	findChannelBySlug,
-	findChannelImage,
-	findTrack,
-	findTracksByChannel
-}

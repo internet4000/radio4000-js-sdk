@@ -1,5 +1,6 @@
 import test from 'ava'
 import {
+	findChannels,
 	findChannel,
 	findChannelBySlug,
 	findChannelImage,
@@ -51,9 +52,22 @@ test('it finds an array of tracks', async t => {
 	const tracks = await findTracksByChannel('-J_QdrlmldCa7DFyh5GH')
 	t.is(typeof tracks, 'object') // object meaning 'array' here
 	t.truthy(tracks.length)
-	// check that it actually is track objects inside
-	const track = tracks[10]
+	// Make sure it contains "tracks"
+	const track = tracks[0]
 	t.truthy(track.id)
 	t.truthy(track.ytid)
 	t.truthy(track.url)
+})
+
+test('it can find channels and accepts a limit', async t => {
+	t.plan(5)
+	const limit = 10
+	const res = await findChannels(limit)
+	t.is(typeof res, 'object') // object meaning 'array' here
+	t.is(res.length, limit)
+	// Make sure it contains "channels"
+	const channel = res[0]
+	t.truthy(channel.id)
+	t.truthy(channel.title)
+	t.truthy(channel.created)
 })
