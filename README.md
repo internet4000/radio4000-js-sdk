@@ -15,6 +15,7 @@ findChannelBySlug(channelSlug)
 findChannelImage(channelObject)
 findTrack(id)
 findTracksByChannel(channelId)
+createBackup(channelSlug)
 ```
 
 ## Usage if you can use `import` or `require`

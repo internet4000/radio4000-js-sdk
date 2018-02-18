@@ -7,6 +7,7 @@ import {
 	findChannelImage,
 	findTrack,
 	findTracksByChannel,
+	createBackup,
 } from './dist/radio4000-sdk.cjs'
 
 test('finds channel by id', async t => {
@@ -70,4 +71,16 @@ test('it can find channels and accepts a limit', async t => {
 	t.truthy(channel.id)
 	t.truthy(channel.title)
 	t.truthy(channel.created)
+})
+
+test('it can create a full backup from a slug', async t => {
+	const res = await createBackup('200ok')
+	t.is(res.title, '200ok')
+	t.truthy(res.id)
+	t.truthy(res.body)
+	t.truthy(res.tracks.length)
+	const track = res.tracks[0]
+	t.truthy(track.id)
+	t.truthy(track.ytid)
+	t.truthy(track.url)
 })

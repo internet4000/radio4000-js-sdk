@@ -67,3 +67,42 @@ export const findTracksByChannel = id => {
 			.then(arr => arr.sort((a, b) => a.created - b.created))
 	)
 }
+
+export const createBackup = slug => {
+	if (!slug) throw new Error('Can not export channel without a `slug`')
+
+	let backup
+
+	return (
+		findChannelBySlug(slug)
+			// Replace "images" with an "image" URL of the latest image
+			.then(channel => {
+				return findChannelImage(channel)
+					.then(url => {
+						delete channel.images
+						channel.image = url
+						return channel
+					})
+					.catch(() => {
+						// Allow it to continue without image.
+						return channel
+					})
+			})
+			// Embed all tracks and remove favorites (useless as is)
+			.then(channel => {
+				delete channel.favoriteChannels
+				delete channel.isPremium
+				delete channel.tracks
+				backup = channel
+				return findTracksByChannel(channel.id)
+			})
+			.then(tracks => {
+				backup.tracks = tracks
+				return backup
+			})
+			.catch(err => {
+				console.log(err)
+				return Promise.reject(new Error('Could not export your radio, sorry.'))
+			})
+	)
+}
