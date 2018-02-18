@@ -1,31 +1,28 @@
 {
 	"name": "radio4000-sdk",
 	"version": "0.0.0",
+	"license": "MIT",
+	"main": "dist/radio4000-sdk.cjs.js",
+	"module": "dist/radio4000-sdk.es.js",
+	"browser": "dist/radio4000-sdk.js",
+	"files": [
+		"dist"
+	],
 	"scripts": {
-		"test": "NODE_ENV=production ava",
-		"format": "prettier --write '*.js'"
+		"build": "bili index.js --format cjs,es,umd,umd-min --no-inline --global.isomorphic-unfetch fetch",
+		"pretest": "npm run build",
+		"test": "xo && ava"
 	},
 	"dependencies": {
-		"isomorphic-fetch": "^2.2.1",
-		"unfetch": "^3.0.0"
+		"isomorphic-unfetch": "^2.0.0"
 	},
 	"devDependencies": {
-		"ava": "^0.23.0",
-		"babel-preset-env": "^1.6.1"
+		"ava": "^1.0.0-beta.3",
+		"bili": "^2.2.7",
+		"xo": "^0.20.2"
 	},
-	"ava": {
-		"require": [
-			"babel-register"
-		]
-	},
-	"babel": {
-		"presets": [
-			"env"
-		]
-	},
-	"prettier": {
-		"useTabs": true,
-		"singleQuote": true,
-		"semi": false
+	"xo": {
+		"semicolon": false,
+		"prettier": true
 	}
 }

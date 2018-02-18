@@ -4,6 +4,8 @@
 
 This package takes care of a few annoyances with Firebase: not having an `id` inside each object, "lists" being returned as an object instead an array.
 
+## API
+
 Here are the methods you can use. All return a promise.
 
 ```js
@@ -15,24 +17,39 @@ findTrack(id)
 findTracksByChannel(channelId)
 ```
 
-## Usage
+## Usage if you can use `import` or `require`
 
-@todo publish to NPM.
+Install the module.
 
-For now, clone this repository and run `yarn link` inside. Then do `yarn link radio4000-api-sdk` in the project where you want this.
+```
+yarn add radio4000-sdk
+```
 
 Then, import the methods you need:
 
 ```js
-// ES6 Modules
-import { findChannel, findChannelBySlug } from 'radio4000-api-sdk'
+// ES Modules
+import { findChannel, findChannelBySlug } from 'radio4000-sdk'
 
-// CommonJS
-const { findChannel, findTracks } = require('radio4000-api-sdk')
+// Node.js/CommonJS
+const { findChannel, findTracks } = require('radio4000-sdk')
 ```
 
+## Usage with `<script>`
+
+For browsers you can do this. It will add a `radio4000Sdk` global
+
+```html
+<script src="radio4000-sdk.js"></script>
+<script>
+radio4000Sdk.findChannelBySlug('detecteve')
+  .then(channel => {
+	  console.log(channel.title)
+	})
+</script>
+```
 
 ## Development
 
-Clone the repo, npm install and npm test. There is no start.
+Clone the repo, npm install and npm test. There is no start because this is a library.
 

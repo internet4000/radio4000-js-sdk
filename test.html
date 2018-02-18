@@ -1,0 +1,28 @@
+<!-- For browsers we use the "UMD" version of the module -->
+
+<!-- <script src="./dist/radio4000-sdk.js"></script>
+<script>
+		radio4000Sdk.findChannelBySlug('200ok')
+		.then(c => {
+			console.log(c);
+			alert(c.body)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+</script> -->
+
+<!-- For newer browsers, we can even use the ES Modules version -->
+<!-- note: this doesn't work yet because the ESM version wrongly depends on -->
+
+<script type="module">
+	// import fetch from './node_modules/unfetch/dist/unfetch.es.js';
+	import {findChannelBySlug} from './dist/radio4000-sdk.es.js'
+	findChannelBySlug('200ok')
+		.then(c => {
+			console.log(c);
+			alert(`Type module worked: ${c.body}`)
+		})
+</script>
+
+

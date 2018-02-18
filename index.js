@@ -1,34 +1,31 @@
-const fetch = require('isomorphic-fetch')
-const host = require('./database-url')
+import fetch from 'isomorphic-unfetch'
 
 // Helpers to make it easier to work with the Radio4000 Firebase database.
-export const fetchAndParse = url =>
-	fetch(url)
+const fetchAndParse = (url, host = 'https://radio4000.firebaseio.com') =>
+	fetch(`${host}/${url}`)
 		.then(res => res.json())
 		.then(data => {
 			// Catch resolved promise with empty value. Like non-existing slug or id.
-			if (!Object.keys(data).length) throw new Error('Not found')
+			if (Object.keys(data).length === 0) throw new Error('Not found')
 			return data
 		})
 
-export const toObject = (obj, id) => Object.assign(obj, { id })
-
-export const toArray = data =>
-	Object.keys(data).map(id => toObject(data[id], id))
-
-export function findChannels(max) {
-	let url = `${host}/channels.json`
-	if (max) url = url + `?orderBy="created"&limitToFirst=${max}`
-	return fetchAndParse(url).then(toArray)
-}
+const toObject = (obj, id) => Object.assign(obj, {id})
+const toArray = data => Object.keys(data).map(id => toObject(data[id], id))
 
 export function findChannel(id) {
-	const url = `${host}/channels/${id}.json`
+	const url = `channels/${id}.json`
 	return fetchAndParse(url).then(obj => toObject(obj, id))
 }
 
-export function findChannelBySlug(slug) {
-	const url = `${host}/channels.json?orderBy="slug"&startAt="${slug}"&endAt="${slug}"`
+export const findChannels = max => {
+	let url = `channels.json`
+	if (max) url += `?orderBy="created"&limitToFirst=${max}`
+	return fetchAndParse(url).then(toArray)
+}
+
+export const findChannelBySlug = slug => {
+	const url = `channels.json?orderBy="slug"&startAt="${slug}"&endAt="${slug}"`
 	return fetchAndParse(url)
 		.then(toArray)
 		.then(arr => arr[0])
@@ -36,11 +33,13 @@ export function findChannelBySlug(slug) {
 
 // Returns a the newest image in the form of a "src" string.
 // Expects a channel model object.
-export function findChannelImage(channel) {
+export const findChannelImage = channel => {
 	if (!channel || !channel.images) {
-		return Promise.reject('Channel does not have an image')
+		return Promise.reject(new Error('Channel does not have an image'))
 	}
-	const url = `${host}/images.json?orderBy="channel"&startAt="${channel.id}"&endAt="${channel.id}"&limitToLast=1`
+	const url = `images.json?orderBy="channel"&startAt="${channel.id}"&endAt="${
+		channel.id
+	}"&limitToLast=1`
 	return fetchAndParse(url)
 		.then(toArray)
 		.then(arr => arr[0])
@@ -52,20 +51,19 @@ export function findChannelImage(channel) {
 		})
 }
 
-export function findTrack(id) {
-	const url = `${host}/tracks/${id}.json`
+export const findTrack = id => {
+	const url = `tracks/${id}.json`
 	return fetchAndParse(url).then(data => toObject(data, id))
 }
 
-export function findTracksByChannel(id) {
+export const findTracksByChannel = id => {
 	if (typeof id !== 'string')
 		throw new Error('Pass a string with a valid channel id')
-	const url = `${host}/tracks.json?orderBy="channel"&startAt="${id}"&endAt="${id}"`
-	return fetchAndParse(url)
-		.then(toArray)
-		.then(arr => {
+	const url = `tracks.json?orderBy="channel"&startAt="${id}"&endAt="${id}"`
+	return (
+		fetchAndParse(url)
+			.then(toArray)
 			// Firebase queries through REST are not sorted.
-			return arr.sort((a, b) => a.created - b.created)
-		})
+			.then(arr => arr.sort((a, b) => a.created - b.created))
+	)
 }
-

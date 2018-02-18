@@ -1,12 +1,13 @@
 import test from 'ava'
+
 import {
 	findChannels,
 	findChannel,
 	findChannelBySlug,
 	findChannelImage,
 	findTrack,
-	findTracksByChannel
-} from './index'
+	findTracksByChannel,
+} from './dist/radio4000-sdk.cjs'
 
 test('finds channel by id', async t => {
 	const res = await findChannel('-JXHtCxC9Ew-Ilck6iZ8')
@@ -48,9 +49,8 @@ test('it finds a track with id', async t => {
 })
 
 test('it finds an array of tracks', async t => {
-	const channel = await findChannelBySlug('200ok')
 	const tracks = await findTracksByChannel('-J_QdrlmldCa7DFyh5GH')
-	t.is(typeof tracks, 'object') // object meaning 'array' here
+	t.is(typeof tracks, 'object') // Object meaning 'array' here
 	t.truthy(tracks.length)
 	// Make sure it contains "tracks"
 	const track = tracks[0]
@@ -63,7 +63,7 @@ test('it can find channels and accepts a limit', async t => {
 	t.plan(5)
 	const limit = 10
 	const res = await findChannels(limit)
-	t.is(typeof res, 'object') // object meaning 'array' here
+	t.is(typeof res, 'object') // Object meaning 'array' here
 	t.is(res.length, limit)
 	// Make sure it contains "channels"
 	const channel = res[0]
