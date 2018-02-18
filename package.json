@@ -1,6 +1,6 @@
 {
 	"name": "radio4000-sdk",
-	"version": "0.0.0",
+	"version": "0.0.3",
 	"license": "MIT",
 	"main": "dist/radio4000-sdk.cjs.js",
 	"module": "dist/radio4000-sdk.es.js",
@@ -11,6 +11,7 @@
 	"scripts": {
 		"build": "bili index.js --format cjs,es,umd,umd-min --no-inline --global.isomorphic-unfetch fetch",
 		"pretest": "npm run build",
+		"prepublishOnly": "npm run build",
 		"test": "xo && ava"
 	},
 	"dependencies": {
