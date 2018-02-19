@@ -2,7 +2,12 @@
 
 > Helpers to fetch data via REST API from the Radio4000 Firebase database
 
-This package takes care of a few annoyances with Firebase: not having an `id` inside each object, "lists" being returned as an object instead an array.
+[![Build Status](https://travis-ci.org/internet4000/radio4000-js-sdk.svg?branch=master)](https://travis-ci.org/internet4000/radio4000-js-sdk)
+
+- works in browsers and node (tested)
+- less than 1kb minified
+- tested
+
 
 ## API
 
@@ -18,9 +23,9 @@ findTracksByChannel(channelId)
 createBackup(channelSlug)
 ```
 
-## Usage if you can use `import` or `require`
+## Usage if you can `import` or `require`
 
-Install the module.
+Install the module:
 
 ```
 yarn add radio4000-sdk
@@ -48,13 +53,11 @@ For browsers you can do this. It will add a `radio4000Sdk` global.
 -->
 <script>
 radio4000Sdk.findChannelBySlug('detecteve')
-  .then(channel => {
-    console.log(channel.title)
-  })
+  .then(channel => {console.log(channel.title)})
 </script>
 ```
 
 ## Development
 
-Clone the repo, npm install and npm test. There is no start because this is a library.
+Clone the repo, `yarn` and `yarn test`. There is no start because this is a library.
 
