@@ -4,10 +4,8 @@
 
 [![Build Status](https://travis-ci.org/internet4000/radio4000-js-sdk.svg?branch=master)](https://travis-ci.org/internet4000/radio4000-js-sdk)
 
-- works in browsers and node (tested)
+- works in browsers and node
 - less than 1kb minified
-- tested
-
 
 ## API
 
