@@ -38,15 +38,19 @@ const { findChannel, findTracks } = require('radio4000-sdk')
 
 ## Usage with `<script>`
 
-For browsers you can do this. It will add a `radio4000Sdk` global
+For browsers you can do this. It will add a `radio4000Sdk` global.
 
 ```html
 <script src="radio4000-sdk.js"></script>
+<!-- or with a CDN
+<script src="https://unpkg.com/radio4000-sdk"></script>
+<script src="https://cdn.jsdelivr.net/npm/radio4000-sdk"></script>
+-->
 <script>
 radio4000Sdk.findChannelBySlug('detecteve')
   .then(channel => {
-	  console.log(channel.title)
-	})
+    console.log(channel.title)
+  })
 </script>
 ```
 
