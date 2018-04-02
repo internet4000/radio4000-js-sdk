@@ -100,7 +100,7 @@ export const createBackup = slug => {
 				backup.tracks = tracks
 				return backup
 			})
-			.catch(err => {
+			.catch(() => {
 				return Promise.reject(new Error('Could not export your radio, sorry.'))
 			})
 	)
