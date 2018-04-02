@@ -11,7 +11,7 @@
 	"scripts": {
 		"build": "bili index.js --format cjs,es,umd,umd-min --no-inline --global.isomorphic-unfetch fetch",
 		"pretest": "npm run build",
-		"prepublishOnly": "npm run build",
+		"release": "release-it --buildCommand 'npm run build'",
 		"test": "xo && ava"
 	},
 	"dependencies": {
@@ -20,6 +20,7 @@
 	"devDependencies": {
 		"ava": "^1.0.0-beta.3",
 		"bili": "^2.2.7",
+		"release-it": "^7.3.0",
 		"xo": "^0.20.2"
 	},
 	"xo": {

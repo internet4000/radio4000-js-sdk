@@ -59,3 +59,4 @@ radio4000Sdk.findChannelBySlug('detecteve')
 
 Clone the repo, `yarn` and `yarn test`. There is no start because this is a library.
 
+To release a new version, run `yarn release`. Run `yarn release --help` for more information.
