@@ -61,47 +61,54 @@ export const findTracksByChannel = id => {
 		throw new Error('Pass a string with a valid channel id')
 	const url = `tracks.json?orderBy="channel"&startAt="${id}"&endAt="${id}"`
 	return (
+		// Firebase queries through REST are not sorted.
 		fetchAndParse(url)
 			.then(toArray)
-			// Firebase queries through REST are not sorted.
 			.then(arr => arr.sort((a, b) => a.created - b.created))
 	)
 }
 
-export const createBackup = slug => {
+export function createBackup(slug) {
 	if (!slug) throw new Error('Can not export channel without a `slug`')
 
 	let backup
 
-	return (
-		findChannelBySlug(slug)
-			// Replace "images" with an "image" URL of the latest image
-			.then(channel => {
-				return findChannelImage(channel)
-					.then(url => {
-						delete channel.images
-						channel.image = url
+	return findChannelBySlug(slug)
+		.then(channel => {
+			// Add a new "image" property from the latest image
+			return (
+				findChannelImage(channel)
+					.then(img => {
+						channel.image = {cloudinaryId: img.src, url: img.url}
 						return channel
 					})
-					.catch(() => {
-						// Allow it to continue without image.
-						return channel
-					})
+					// Allow it to continue without an image.
+					.catch(() => channel)
+			)
+		})
+		.then(channel => {
+			// Clean up
+			delete channel.images
+			delete channel.channelPublic
+			delete channel.favoriteChannels
+			delete channel.isFeatured
+			delete channel.isPremium
+			delete channel.tracks
+
+			// Save current state of backup.
+			backup = channel
+			return channel
+		})
+		.then(channel => findTracksByChannel(channel.id))
+		.then(tracks => {
+			// Clean up tracks
+			backup.tracks = tracks.map(track => {
+				delete track.channel
+				return track
 			})
-			// Embed all tracks and remove favorites (useless as is)
-			.then(channel => {
-				delete channel.favoriteChannels
-				delete channel.isPremium
-				delete channel.tracks
-				backup = channel
-				return findTracksByChannel(channel.id)
-			})
-			.then(tracks => {
-				backup.tracks = tracks
-				return backup
-			})
-			.catch(() => {
-				return Promise.reject(new Error('Could not export your radio, sorry.'))
-			})
-	)
+			return backup
+		})
+		.catch(() => {
+			return Promise.reject(new Error('Could not export your radio, sorry.'))
+		})
 }

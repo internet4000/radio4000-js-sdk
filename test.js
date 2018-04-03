@@ -74,13 +74,16 @@ test('it can find channels and accepts a limit', async t => {
 })
 
 test('it can create a full backup from a slug', async t => {
-	const res = await createBackup('200ok')
-	t.is(res.title, '200ok')
+	const testSlug = '200ok'
+	const res = await createBackup(testSlug)
+	t.is(res.slug, testSlug)
 	t.truthy(res.id)
-	t.truthy(res.body)
 	t.truthy(res.tracks.length)
+	t.is(res.image.channel, undefined, 'image relationship is cleaned')
+
 	const track = res.tracks[0]
 	t.truthy(track.id)
 	t.truthy(track.ytid)
 	t.truthy(track.url)
+	t.is(track.channel, undefined, 'channel relationship on tracks are cleaned')
 })
