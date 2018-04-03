@@ -1,6 +1,6 @@
 {
 	"name": "radio4000-sdk",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"license": "MIT",
 	"main": "dist/radio4000-sdk.cjs.js",
 	"module": "dist/radio4000-sdk.es.js",
