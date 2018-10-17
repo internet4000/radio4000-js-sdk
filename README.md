@@ -15,11 +15,12 @@ Here are the methods you can use. All return a promise.
 findChannels(amount) // amount is optional
 findChannel(id)
 findChannelBySlug(channelSlug)
-findChannelImage(channelObject)
 findTrack(id)
 findTracksByChannel(channelId)
 createBackup(channelSlug)
 ```
+
+> Note: the `findChannelImage(channelObject)` method was removed in 0.1.0
 
 ## Usage if you can `import` or `require`
 

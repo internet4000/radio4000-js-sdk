@@ -4,10 +4,9 @@ import {
 	findChannels,
 	findChannel,
 	findChannelBySlug,
-	findChannelImage,
 	findTrack,
 	findTracksByChannel,
-	createBackup,
+	createBackup
 } from './dist/radio4000-sdk.cjs'
 
 test('finds channel by id', async t => {
@@ -30,15 +29,6 @@ test('finds channel by slug', async t => {
 
 test('throws when it can not find by slug', async t => {
 	await t.throws(findChannelBySlug('fake slug'))
-})
-
-test('it returns an image with extra "url" prop', async t => {
-	const channel = await findChannelBySlug('200ok')
-	const res = await findChannelImage(channel)
-	t.truthy(res.id)
-	t.is(typeof res.src, 'string')
-	t.truthy(res.url.includes('cloudinary'))
-	t.truthy(res.url.includes('image/upload'))
 })
 
 test('it finds a track with id', async t => {
@@ -86,4 +76,9 @@ test('it can create a full backup from a slug', async t => {
 	t.truthy(track.ytid)
 	t.truthy(track.url)
 	t.is(track.channel, undefined, 'channel relationship on tracks are cleaned')
+
+	t.is(typeof res.image, 'string')
+	t.is(typeof res.imageUrl, 'string')
+	t.truthy(res.imageUrl.includes('cloudinary'))
+	t.truthy(res.imageUrl.includes('image/upload'))
 })

@@ -31,34 +31,15 @@ export const findChannelBySlug = slug => {
 		.then(arr => arr[0])
 }
 
-// Returns a the newest image in the form of a "src" string.
-// Expects a channel model object.
-export const findChannelImage = channel => {
-	if (!channel || !channel.images) {
-		return Promise.reject(new Error('Channel does not have an image'))
-	}
-	const url = `images.json?orderBy="channel"&startAt="${channel.id}"&endAt="${
-		channel.id
-	}"&limitToLast=1`
-	return fetchAndParse(url)
-		.then(toArray)
-		.then(arr => arr[0])
-		.then(img => {
-			const rootURL = 'https://res.cloudinary.com/radio4000/image/upload'
-			const transforms = `q_auto,w_56,h_56,c_thumb,c_fill,fl_lossy`
-			img.url = `${rootURL}/${transforms}/${img.src}`
-			return img
-		})
-}
-
 export const findTrack = id => {
 	const url = `tracks/${id}.json`
 	return fetchAndParse(url).then(data => toObject(data, id))
 }
 
 export const findTracksByChannel = id => {
-	if (typeof id !== 'string')
-		throw new Error('Pass a string with a valid channel id')
+	if (typeof id !== 'string') {
+		throw new TypeError('Pass a string with a valid channel id')
+	}
 	const url = `tracks.json?orderBy="channel"&startAt="${id}"&endAt="${id}"`
 	return (
 		// Firebase queries through REST are not sorted.
@@ -72,20 +53,9 @@ export function createBackup(slug) {
 	if (!slug) throw new Error('Can not export channel without a `slug`')
 
 	let backup
+	const cloudinaryUrl = 'https://res.cloudinary.com/radio4000/image/upload/'
 
 	return findChannelBySlug(slug)
-		.then(channel => {
-			// Add a new "image" property from the latest image
-			return (
-				findChannelImage(channel)
-					.then(img => {
-						channel.image = {cloudinaryId: img.src, url: img.url}
-						return channel
-					})
-					// Allow it to continue without an image.
-					.catch(() => channel)
-			)
-		})
 		.then(channel => {
 			// Clean up
 			delete channel.images
@@ -94,6 +64,10 @@ export function createBackup(slug) {
 			delete channel.isFeatured
 			delete channel.isPremium
 			delete channel.tracks
+
+			if (channel.image) {
+				channel.imageUrl = `${cloudinaryUrl}/${channel.image}`
+			}
 
 			// Save current state of backup.
 			backup = channel
