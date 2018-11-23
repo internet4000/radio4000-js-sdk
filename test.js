@@ -21,8 +21,8 @@ test('it throws an error when it doesn find anything', async t => {
 })
 
 test('finds channel by slug', async t => {
-	const res = await findChannelBySlug('200ok')
-	t.is(res.title, '200ok')
+	const res = await findChannelBySlug('oskar')
+	t.is(res.title, 'Radio Oskar')
 	t.truthy(res.id)
 	t.truthy(res.body)
 })
@@ -64,18 +64,20 @@ test('it can find channels and accepts a limit', async t => {
 })
 
 test('it can create a full backup from a slug', async t => {
-	const testSlug = '200ok'
+	const testSlug = 'oskar'
 	const res = await createBackup(testSlug)
 	t.is(res.slug, testSlug)
 	t.truthy(res.id)
-	t.truthy(res.tracks.length)
 	t.is(res.image.channel, undefined, 'image relationship is cleaned')
 
-	const track = res.tracks[0]
-	t.truthy(track.id)
-	t.truthy(track.ytid)
-	t.truthy(track.url)
-	t.is(track.channel, undefined, 'channel relationship on tracks are cleaned')
+	if (res.tracks) {
+		t.truthy(res.tracks.length)
+		const track = res.tracks[0]
+		t.truthy(track.id)
+		t.truthy(track.ytid)
+		t.truthy(track.url)
+		t.is(track.channel, undefined, 'channel relationship on tracks are cleaned')
+	}
 
 	t.is(typeof res.image, 'string')
 	t.is(typeof res.imageUrl, 'string')

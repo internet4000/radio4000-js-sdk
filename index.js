@@ -53,7 +53,7 @@ export function createBackup(slug) {
 	if (!slug) throw new Error('Can not export channel without a `slug`')
 
 	let backup
-	const cloudinaryUrl = 'https://res.cloudinary.com/radio4000/image/upload/'
+	const cloudinaryUrl = 'https://res.cloudinary.com/radio4000/image/upload'
 
 	return findChannelBySlug(slug)
 		.then(channel => {
@@ -63,26 +63,24 @@ export function createBackup(slug) {
 			delete channel.favoriteChannels
 			delete channel.isFeatured
 			delete channel.isPremium
-			delete channel.tracks
 
 			if (channel.image) {
 				channel.imageUrl = `${cloudinaryUrl}/${channel.image}`
 			}
-
 			// Save current state of backup.
 			backup = channel
 			return channel
 		})
-		.then(channel => findTracksByChannel(channel.id))
-		.then(tracks => {
-			// Clean up tracks
-			backup.tracks = tracks.map(track => {
-				delete track.channel
-				return track
+		.then(channel => {
+			if (!channel.tracks) return channel
+			return findTracksByChannel(channel.id).then(tracks => {
+				// Clean up tracks
+				backup.tracks = tracks.map(track => {
+					delete track.channel
+					return track
+				})
+				return backup
 			})
-			return backup
 		})
-		.catch(() => {
-			return Promise.reject(new Error('Could not export your radio, sorry.'))
-		})
+		.catch(() => Promise.reject(new Error('Could not backup your radio')))
 }
