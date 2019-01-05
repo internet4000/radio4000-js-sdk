@@ -17,7 +17,7 @@ test('finds channel by id', async t => {
 })
 
 test('it throws an error when it doesn find anything', async t => {
-	await t.throws(findChannel('fake id'))
+	await t.throwsAsync(findChannel('fake id'))
 })
 
 test('finds channel by slug', async t => {
@@ -28,7 +28,7 @@ test('finds channel by slug', async t => {
 })
 
 test('throws when it can not find by slug', async t => {
-	await t.throws(findChannelBySlug('fake slug'))
+	await t.throwsAsync(findChannelBySlug('fake slug'))
 })
 
 test('it finds a track with id', async t => {
