@@ -11,7 +11,8 @@
 	"scripts": {
 		"build": "bili index.js --format cjs,es,umd,umd-min --no-inline --global.isomorphic-unfetch fetch",
 		"pretest": "npm run build",
-		"release": "release-it --buildCommand 'npm run build'",
+		"beforeStage": "npm run build",
+		"release": "release-it",
 		"test": "xo && ava"
 	},
 	"dependencies": {
