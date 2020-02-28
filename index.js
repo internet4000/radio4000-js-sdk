@@ -103,11 +103,9 @@ export const tagsFromString = searchText => {
 export const tagsFromList = (items, attribute = 'body') => {
 	let aggBodies
 	if (items && items.length > 0) {
-		aggBodies = items
-			.map(item => item[attribute])
-			.reduce((acc, curr) => {
-				return acc + ' ' + curr
-			})
+		aggBodies = items.map(item => item[attribute]).reduce((acc, curr) => {
+			return acc + ' ' + curr
+		})
 	} else {
 		aggBodies = ''
 	}
