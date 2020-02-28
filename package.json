@@ -8,6 +8,10 @@
 	"files": [
 		"dist"
 	],
+	"repository": {
+    "type": "git",
+    "url": "git+https://github.com/internet4000/radio400-js-sdk.git"
+  },
 	"scripts": {
 		"build": "bili index.js --format cjs,es,umd,umd-min --no-inline --global.isomorphic-unfetch fetch",
 		"pretest": "npm run build",
