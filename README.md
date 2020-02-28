@@ -24,31 +24,34 @@ createBackup(channelSlug)
 
 ## Tags methods
 
+You can use these methods, which should help find the tags the way you
+need them.
+
 ``` js
 const example1 = '#hello world #what-is-up'
-console.log(generateHashtags(example1))
+console.log(tagsFromString(example1))
 // [ 'hello', 'what-is-up']
 
 const example2 = [
     {
-	body: 'hello #world'
+        body: 'hello #world'
     },
     {
-	body: '#miam iz #world'
+        body: '#miam iz #world'
     }
 ]
-console.log(findHashtags(example2))
+console.log(tagsFromList(example2, 'body'))
 // [ 'world', 'miam', 'world' ]
 
 const example3 = [
     {
-	body: 'hello #world'
+        body: 'hello #world'
     },
     {
-	body: '#miam iz #world #tour'
+        body: '#miam iz #world #tour'
     }
 ]
-console.log(generateUniqueHashtags(example3))
+console.log(uniqueTagsFromList(example3, 'body'))
 // {
 //   tags: [ 'world', 'miam', 'tour' ],
 //   sortedTags: [ [ 'world', 2 ], [ 'miam', 1 ], [ 'tour', 1 ] ]

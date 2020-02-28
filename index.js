@@ -89,7 +89,7 @@ export function createBackup(slug) {
 // Test here: https://regex101.com/r/pJ4wC5/1
 export const hashtagRegex = /(^|\s)(#[a-z\d-]+)/gi
 
-export const findHashtags = searchText => {
+export const tagsFromString = searchText => {
 	if (!searchText) return null
 	// https://regexr.com/46r2p
 	const regexp = /(?:\B#)(\w|-?)+\b/g
@@ -100,7 +100,7 @@ export const findHashtags = searchText => {
 	return result.map(item => item.replace('#', ''))
 }
 
-export const generateHashtags = (items, attribute = 'body') => {
+export const tagsFromList = (items, attribute = 'body') => {
 	let aggBodies
 	if (items && items.length > 0) {
 		aggBodies = items
@@ -112,11 +112,11 @@ export const generateHashtags = (items, attribute = 'body') => {
 		aggBodies = ''
 	}
 
-	return findHashtags(aggBodies)
+	return tagsFromString(aggBodies)
 }
 
-export const generateUniqueHashtags = (items, attribute = 'body') => {
-	const tags = generateHashtags(items, attribute)
+export const uniqueTagsFromList = (items, attribute = 'body') => {
+	const tags = tagsFromList(items, attribute)
 
 	if (!tags) return null
 

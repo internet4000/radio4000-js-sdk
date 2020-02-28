@@ -11,9 +11,9 @@ import {
 
 	/* Tags */
 	/* TODO: hashtagRegex, */
-	generateHashtags,
-	generateUniqueHashtags,
-	findHashtags
+	tagsFromString,
+	tagsFromList,
+	uniqueTagsFromList
 } from './dist/radio4000-sdk.cjs'
 
 /* Api */
@@ -96,14 +96,14 @@ test('it can create a full backup from a slug', async t => {
 /* Tags */
 test('It find all tags in a string', t => {
 	const example = '#hello world #what-is-up'
-	const h = findHashtags(example)
+	const h = tagsFromString(example)
 	t.true(h[0] === 'hello')
 	t.true(h[1] === 'what-is-up')
 })
 
 test('It find all tags, including duplicates', t => {
 	const example = '#hello world #what-is-up #world #hello'
-	const h = findHashtags(example)
+	const h = tagsFromString(example)
 	t.true(h.length === 4)
 })
 
@@ -116,7 +116,7 @@ test('Generate all tags from array of tracks', t => {
 			body: '#miam iz #world'
 		}
 	]
-	const h = generateHashtags(tracks)
+	const h = tagsFromList(tracks)
 	t.true(h.length === 3)
 	t.true(h.join('') === 'worldmiamworld')
 })
@@ -130,7 +130,7 @@ test('It find all tags in a array of tracks', t => {
 			body: '#miam iz #world #tour'
 		}
 	]
-	const h = generateUniqueHashtags(tracks)
+	const h = uniqueTagsFromList(tracks)
 	t.true(h.sortedTags.length === 3)
 	t.true(h.sortedTags[0][0] === 'world')
 	t.true(h.sortedTags[0][1] === 2)
