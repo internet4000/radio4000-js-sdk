@@ -7,7 +7,7 @@
 - works in browsers and node
 - less than 1kb minified
 
-## API
+## API methods
 
 Here are the methods you can use. All return a promise.
 
@@ -21,6 +21,39 @@ createBackup(channelSlug)
 ```
 
 > Note: the `findChannelImage(channelObject)` method was removed in 0.1.0
+
+## Tags methods
+
+``` js
+const example1 = '#hello world #what-is-up'
+console.log(generateHashtags(example1))
+// [ 'hello', 'what-is-up']
+
+const example2 = [
+    {
+	body: 'hello #world'
+    },
+    {
+	body: '#miam iz #world'
+    }
+]
+console.log(findHashtags(example2))
+// [ 'world', 'miam', 'world' ]
+
+const example3 = [
+    {
+	body: 'hello #world'
+    },
+    {
+	body: '#miam iz #world #tour'
+    }
+]
+console.log(generateUniqueHashtags(example3))
+// {
+//   tags: [ 'world', 'miam', 'tour' ],
+//   sortedTags: [ [ 'world', 2 ], [ 'miam', 1 ], [ 'tour', 1 ] ]
+// }
+```
 
 ## Usage if you can `import` or `require`
 
