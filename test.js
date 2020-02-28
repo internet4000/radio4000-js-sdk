@@ -1,14 +1,22 @@
 import test from 'ava'
 
 import {
+	/* Api */
 	findChannels,
 	findChannel,
 	findChannelBySlug,
 	findTrack,
 	findTracksByChannel,
-	createBackup
+	createBackup,
+
+	/* Tags */
+	/* TODO: hashtagRegex, */
+	tagsFromString,
+	tagsFromList,
+	uniqueTagsFromList
 } from './dist/radio4000-sdk.cjs'
 
+/* Api */
 test('finds channel by id', async t => {
 	const res = await findChannel('-JXHtCxC9Ew-Ilck6iZ8')
 	t.is(res.title, 'Radio Oskar')
@@ -83,4 +91,47 @@ test('it can create a full backup from a slug', async t => {
 	t.is(typeof res.imageUrl, 'string')
 	t.truthy(res.imageUrl.includes('cloudinary'))
 	t.truthy(res.imageUrl.includes('image/upload'))
+})
+
+/* Tags */
+test('It find all tags in a string', t => {
+	const example = '#hello world #what-is-up'
+	const h = tagsFromString(example)
+	t.true(h[0] === 'hello')
+	t.true(h[1] === 'what-is-up')
+})
+
+test('It find all tags, including duplicates', t => {
+	const example = '#hello world #what-is-up #world #hello'
+	const h = tagsFromString(example)
+	t.true(h.length === 4)
+})
+
+test('Generate all tags from array of tracks', t => {
+	const tracks = [
+		{
+			body: 'hello #world'
+		},
+		{
+			body: '#miam iz #world'
+		}
+	]
+	const h = tagsFromList(tracks)
+	t.true(h.length === 3)
+	t.true(h.join('') === 'worldmiamworld')
+})
+
+test('It find all tags in a array of tracks', t => {
+	const tracks = [
+		{
+			body: 'hello #world'
+		},
+		{
+			body: '#miam iz #world #tour'
+		}
+	]
+	const h = uniqueTagsFromList(tracks)
+	t.true(h.sortedTags.length === 3)
+	t.true(h.sortedTags[0][0] === 'world')
+	t.true(h.sortedTags[0][1] === 2)
 })
