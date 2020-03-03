@@ -9,9 +9,9 @@
 		"dist"
 	],
 	"repository": {
-    "type": "git",
-    "url": "git+https://github.com/internet4000/radio400-js-sdk.git"
-  },
+		"type": "git",
+		"url": "git+https://github.com/internet4000/radio400-js-sdk.git"
+	},
 	"scripts": {
 		"build": "bili index.js --format cjs,es,umd,umd-min --no-inline --global.isomorphic-unfetch fetch",
 		"pretest": "npm run build",
@@ -23,10 +23,10 @@
 		"isomorphic-unfetch": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "^1.0.1",
+		"ava": "^3.5.0",
 		"bili": "^3.4.2",
-		"release-it": "^9.5.1",
-		"xo": "0.23.0"
+		"release-it": "^12.6.2",
+		"xo": "0.27.2"
 	},
 	"xo": {
 		"semicolon": false,
