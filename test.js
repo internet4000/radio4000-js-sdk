@@ -1,6 +1,6 @@
-import test from 'ava'
+const test = require('ava')
 
-import {
+const {
 	/* Api */
 	findChannels,
 	findChannel,
@@ -10,11 +10,10 @@ import {
 	createBackup,
 
 	/* Tags */
-	/* TODO: hashtagRegex, */
 	tagsFromString,
 	tagsFromList,
 	uniqueTagsFromList
-} from './dist/radio4000-sdk.cjs'
+} = require('./dist/radio4000-sdk.cjs')
 
 /* Api */
 test('finds channel by id', async t => {

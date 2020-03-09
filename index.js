@@ -40,7 +40,9 @@ export const findTracksByChannel = id => {
 	if (typeof id !== 'string') {
 		throw new TypeError('Pass a string with a valid channel id')
 	}
+
 	const url = `tracks.json?orderBy="channel"&startAt="${id}"&endAt="${id}"`
+
 	return (
 		// Firebase queries through REST are not sorted.
 		fetchAndParse(url)
@@ -67,6 +69,7 @@ export function createBackup(slug) {
 			if (channel.image) {
 				channel.imageUrl = `${cloudinaryUrl}/${channel.image}`
 			}
+
 			// Save current state of backup.
 			backup = channel
 			return channel
@@ -94,18 +97,22 @@ export const tagsFromString = searchText => {
 	// https://regexr.com/46r2p
 	const regexp = /(?:\B#)(\w|-?)+\b/g
 	const result = searchText.match(regexp)
+
 	if (!result) {
 		return null
 	}
+
 	return result.map(item => item.replace('#', ''))
 }
 
 export const tagsFromList = (items, attribute = 'body') => {
 	let aggBodies
 	if (items && items.length > 0) {
-		aggBodies = items.map(item => item[attribute]).reduce((acc, curr) => {
-			return acc + ' ' + curr
-		})
+		aggBodies = items
+			.map(item => item[attribute])
+			.reduce((acc, curr) => {
+				return acc + ' ' + curr
+			})
 	} else {
 		aggBodies = ''
 	}
@@ -124,6 +131,7 @@ export const uniqueTagsFromList = (items, attribute = 'body') => {
 		} else {
 			acc[cur] = 1
 		}
+
 		return acc
 	}, {})
 
